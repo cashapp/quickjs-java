@@ -2,7 +2,7 @@
 androidx-compose = "1.7.5"
 compileSdk = "35"
 http4k = "4.48.0.0"
-kotlin = "2.0.20"
+kotlin = "2.1.0"
 kotlinx-coroutines = "1.9.0"
 kotlinx-serialization = "1.7.3"
 okHttp = "4.12.0"
@@ -30,7 +30,7 @@ auto-service-annotations = { module = "com.google.auto.service:auto-service-anno
 binary-compatibility-validator-gradle-plugin = { module = "org.jetbrains.kotlinx.binary-compatibility-validator:org.jetbrains.kotlinx.binary-compatibility-validator.gradle.plugin", version = "0.16.3" }
 cklib-gradle-plugin = { module = "co.touchlab:cklib-gradle-plugin", version = "0.3.3" }
 dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version = "1.9.20" }
-google-ksp = "com.google.devtools.ksp:symbol-processing-gradle-plugin:2.0.20-1.0.25"
+google-ksp = "com.google.devtools.ksp:symbol-processing-gradle-plugin:2.1.0-1.0.29"
 http4k-core = { module = "org.http4k:http4k-core", version.ref = "http4k" }
 http4k-server-jetty = { module = "org.http4k:http4k-server-jetty", version.ref = "http4k" }
 http4k-client-websocket = { module = "org.http4k:http4k-client-websocket", version.ref = "http4k" }
