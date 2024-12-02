@@ -18,7 +18,6 @@ package app.cash.zipline.api.validator.fir
 import java.io.File
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.analysis.checkers.isSupertypeOf
-import org.jetbrains.kotlin.fir.analysis.checkers.toClassLikeSymbol
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirFunction
 import org.jetbrains.kotlin.fir.declarations.FirProperty
@@ -27,12 +26,9 @@ import org.jetbrains.kotlin.fir.declarations.utils.isInterface
 import org.jetbrains.kotlin.fir.declarations.utils.isSuspend
 import org.jetbrains.kotlin.fir.pipeline.FirResult
 import org.jetbrains.kotlin.fir.resolve.providers.symbolProvider
-import org.jetbrains.kotlin.fir.resolve.toSymbol
-import org.jetbrains.kotlin.fir.symbols.ConeClassifierLookupTag
+import org.jetbrains.kotlin.fir.resolve.toClassLikeSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirClassLikeSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirClassSymbol
-import org.jetbrains.kotlin.fir.types.ConeKotlinType
-import org.jetbrains.kotlin.fir.types.ConeLookupTagBasedType
 import org.jetbrains.kotlin.fir.types.FirResolvedTypeRef
 import org.jetbrains.kotlin.fir.types.FirStarProjection
 import org.jetbrains.kotlin.fir.types.FirTypeProjection
@@ -41,6 +37,7 @@ import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.fir.types.FirUserTypeRef
 import org.jetbrains.kotlin.fir.types.abbreviatedTypeOrSelf
 import org.jetbrains.kotlin.fir.types.coneType
+import org.jetbrains.kotlin.fir.types.lookupTagIfAny
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
@@ -148,15 +145,6 @@ internal class FirZiplineApiReader(
     val valOrVar = if (isVar) "var" else "val"
     val signature = "$valOrVar ${symbol.name.identifier}: ${returnTypeRef.asString()}"
     return FirZiplineFunction(signature)
-  }
-
-  // TODO This is available natively in Kotlin 2.1.0 or newer and can be deleted after upgrading.
-  val ConeKotlinType.lookupTagIfAny: ConeClassifierLookupTag?
-    get() = (this as? ConeLookupTagBasedType)?.lookupTag
-
-  // TODO This is available natively in Kotlin 2.1.0 or newer and can be deleted after upgrading.
-  fun ConeClassifierLookupTag.toClassLikeSymbol(useSiteSession: FirSession): FirClassLikeSymbol<*>? {
-    return toSymbol(useSiteSession) as? FirClassLikeSymbol<*>
   }
 
   /** See [app.cash.zipline.kotlin.asString]. */

@@ -55,7 +55,7 @@ import org.jetbrains.kotlin.ir.expressions.IrInstanceInitializerCall
 import org.jetbrains.kotlin.ir.expressions.IrMemberAccessExpression
 import org.jetbrains.kotlin.ir.expressions.IrReturn
 import org.jetbrains.kotlin.ir.expressions.impl.IrClassReferenceImpl
-import org.jetbrains.kotlin.ir.expressions.impl.IrDelegatingConstructorCallImpl
+import org.jetbrains.kotlin.ir.expressions.impl.IrDelegatingConstructorCallImplWithShape
 import org.jetbrains.kotlin.ir.expressions.impl.IrInstanceInitializerCallImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
@@ -209,13 +209,17 @@ fun DeclarationIrBuilder.irDelegatingConstructorCall(
   valueArgumentsCount: Int = 0,
   block: IrDelegatingConstructorCall.() -> Unit = {},
 ): IrDelegatingConstructorCall {
-  val result = IrDelegatingConstructorCallImpl(
+  val result = IrDelegatingConstructorCallImplWithShape(
     startOffset = startOffset,
     endOffset = endOffset,
     type = context.irBuiltIns.unitType,
     symbol = symbol,
     typeArgumentsCount = typeArgumentsCount,
     valueArgumentsCount = valueArgumentsCount,
+    // Note: These three parameters are unused in the Kotlin 2.1.0 implementation of this factory.
+    contextParameterCount = 0,
+    hasDispatchReceiver = false,
+    hasExtensionReceiver = false,
   )
   result.block()
   return result
