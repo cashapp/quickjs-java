@@ -35,7 +35,7 @@ http4k-core = { module = "org.http4k:http4k-core", version.ref = "http4k" }
 http4k-server-jetty = { module = "org.http4k:http4k-server-jetty", version.ref = "http4k" }
 http4k-client-websocket = { module = "org.http4k:http4k-client-websocket", version.ref = "http4k" }
 junit = { module = "junit:junit", version = "4.13.2" }
-kotlin-compile-testing = { module = "dev.zacsweers.kctfork:core", version = "0.6.0" }
+kotlin-compile-testing = { module = "dev.zacsweers.kctfork:core", version = "0.7.0" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-compose-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
