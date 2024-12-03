@@ -17,7 +17,6 @@ package app.cash.zipline.api.validator.fir
 
 import java.io.File
 import org.jetbrains.kotlin.KtVirtualFileSourceFile
-import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.GroupedKtSources
 import org.jetbrains.kotlin.cli.common.config.addKotlinSourceRoots
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
@@ -29,8 +28,9 @@ import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.cli.jvm.compiler.VfsBasedProjectEnvironment
+import org.jetbrains.kotlin.cli.jvm.compiler.pipeline.IncrementalCompilationApi
 import org.jetbrains.kotlin.cli.jvm.compiler.pipeline.ModuleCompilerInput
-import org.jetbrains.kotlin.cli.jvm.compiler.pipeline.compileModuleToAnalyzedFir
+import org.jetbrains.kotlin.cli.jvm.compiler.pipeline.compileModuleToAnalyzedFirViaLightTreeIncrementally
 import org.jetbrains.kotlin.cli.jvm.config.addJvmClasspathRoots
 import org.jetbrains.kotlin.com.intellij.openapi.util.Disposer
 import org.jetbrains.kotlin.com.intellij.openapi.vfs.StandardFileSystems
@@ -43,8 +43,6 @@ import org.jetbrains.kotlin.diagnostics.DiagnosticReporterFactory
 import org.jetbrains.kotlin.fir.pipeline.FirResult
 import org.jetbrains.kotlin.metadata.jvm.deserialization.JvmProtoBufUtil
 import org.jetbrains.kotlin.modules.TargetId
-import org.jetbrains.kotlin.platform.CommonPlatforms
-import org.jetbrains.kotlin.platform.jvm.JvmPlatforms
 
 /**
  * Loads classes using the compiler tools into the Frontend Intermediate Representation (FIR), so
@@ -85,7 +83,7 @@ internal class KotlinFirLoader(
   fun load(targetName: String): FirResult {
     val configuration = CompilerConfiguration()
     configuration.put(CommonConfigurationKeys.MODULE_NAME, targetName)
-    configuration.put(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, messageCollector)
+    configuration.put(CommonConfigurationKeys.MESSAGE_COLLECTOR_KEY, messageCollector)
     configuration.put(CommonConfigurationKeys.USE_FIR, true)
     configuration.put(JVMConfigurationKeys.JDK_HOME, javaHome)
     configuration.put(JVMConfigurationKeys.JDK_RELEASE, jdkRelease)
@@ -118,12 +116,10 @@ internal class KotlinFirLoader(
         commonSources = emptyList(),
         sourcesByModuleName = mapOf(JvmProtoBufUtil.DEFAULT_MODULE_NAME to sourceFiles),
       ),
-      commonPlatform = CommonPlatforms.defaultCommonPlatform,
-      platform = JvmPlatforms.unspecifiedJvmPlatform,
       configuration = configuration,
     )
 
-    val reporter = DiagnosticReporterFactory.createReporter()
+    val reporter = DiagnosticReporterFactory.createReporter(messageCollector)
 
     val globalScope = GlobalSearchScope.allScope(project)
     val packagePartProvider = environment.createPackagePartProvider(globalScope)
@@ -133,12 +129,22 @@ internal class KotlinFirLoader(
       getPackagePartProviderFn = { packagePartProvider },
     )
 
-    return compileModuleToAnalyzedFir(
-      input = input,
-      projectEnvironment = projectEnvironment,
-      previousStepsSymbolProviders = emptyList(),
-      incrementalExcludesScope = null,
-      diagnosticsReporter = reporter,
+    /*
+        projectEnvironment: VfsBasedProjectEnvironment,
+    messageCollector: MessageCollector,
+    compilerConfiguration: CompilerConfiguration,
+    input: ModuleCompilerInput,
+    diagnosticsReporter: BaseDiagnosticsCollector,
+    incrementalExcludesScope: AbstractProjectFileSearchScope?,
+     */
+    @OptIn(IncrementalCompilationApi::class) // We are not within the Kotlin compiler.
+    return compileModuleToAnalyzedFirViaLightTreeIncrementally(
+      projectEnvironment,
+      messageCollector,
+      configuration,
+      input,
+      reporter,
+      null,
     )
   }
 

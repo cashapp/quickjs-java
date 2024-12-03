@@ -16,5 +16,6 @@
 package app.cash.zipline.profiler
 
 internal actual object DefaultProfilerClock : ProfilerClock {
+  @Suppress("DEPRECATION_ERROR")
   actual override val nanoTime: Long get() = kotlin.system.getTimeNanos()
 }
