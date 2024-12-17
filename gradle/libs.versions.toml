@@ -29,7 +29,7 @@ auto-service-compiler = { module = "dev.zacsweers.autoservice:auto-service-ksp",
 auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version = "1.1.1" }
 binary-compatibility-validator-gradle-plugin = { module = "org.jetbrains.kotlinx.binary-compatibility-validator:org.jetbrains.kotlinx.binary-compatibility-validator.gradle.plugin", version = "0.16.3" }
 cklib-gradle-plugin = { module = "co.touchlab:cklib-gradle-plugin", version = "0.3.3" }
-dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version = "1.9.20" }
+dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version = "2.0.0" }
 google-ksp = "com.google.devtools.ksp:symbol-processing-gradle-plugin:2.1.0-1.0.29"
 http4k-core = { module = "org.http4k:http4k-core", version.ref = "http4k" }
 http4k-server-jetty = { module = "org.http4k:http4k-server-jetty", version.ref = "http4k" }
