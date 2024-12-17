@@ -41,7 +41,7 @@ jobs:
       - name: Build native library (Linux)
         if: matrix.os == 'ubuntu-latest'
         run: |
-          sudo apt-get install -y libtinfo5
+          sudo apt-get install -y libtinfo6
           cp -a . ../zipline-dockerbuild
           docker build \
             --tag zipline-linux-amd64 \
