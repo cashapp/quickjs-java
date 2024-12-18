@@ -7,59 +7,8 @@ on:
 
 env:
   GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.daemon=false -Dkotlin.incremental=false"
-  ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL: 60
 
 jobs:
-  native-library:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        arch: [amd64]
-        cmake-arch: [x86_64]
-        include:
-          - os: macos-latest-large
-            arch: x86_64
-            cmake-arch: x86_64
-          - os: macos-latest
-            arch: aarch64
-            cmake-arch: arm64
-          # TODO: build on 'windows-latest'
-
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: 20
-
-      - name: Build native library (Linux)
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          cp -a . ../zipline-dockerbuild
-          docker build \
-            --tag zipline-linux-amd64 \
-            .github/workflows
-          docker run \
-            --volume `pwd`/../zipline-dockerbuild:/zipline \
-            --workdir /zipline \
-            --entrypoint ./.github/workflows/build-linux-amd64.sh \
-            zipline-linux-amd64
-          mkdir -p zipline/src/jvmMain/resources/jni/amd64
-          cp -v ../zipline-dockerbuild/build/jni/amd64/libquickjs.* zipline/src/jvmMain/resources/jni/amd64/
-
-      - name: Build native library (macOS)
-        if: matrix.os == 'macos-latest' || matrix.os == 'macos-latest-large'
-        run: ./.github/workflows/build-mac.sh -a ${{ matrix.arch }} -c ${{ matrix.cmake-arch }}
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: jvm-native-libraries-${{ matrix.os }}-${{ matrix.arch }}
-          path: zipline/src/jvmMain/resources/*
-          if-no-files-found: error
-
   publish:
     runs-on: macos-latest
     needs:
@@ -70,13 +19,14 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: 20
+          java-version: 23
 
-      - uses: actions/download-artifact@v4
+      - uses: goto-bus-stop/setup-zig@v2
         with:
-          pattern: jvm-native-libraries-*
-          path: zipline/src/jvmMain/resources
-          merge-multiple: true
+          version: 0.13.0
+
+      - run: zig build -p src/jvmMain/resources/jni
+        working-directory: zipline
 
       - run: ./gradlew publishToMavenCentral :dokkaHtmlMultiModule
         if: ${{ github.repository == 'cashapp/zipline' }}

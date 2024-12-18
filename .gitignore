@@ -31,3 +31,7 @@ samples/**/yarn.lock
 zipline-gradle-plugin/src/test/projects/**/yarn.lock
 
 generated-zipline-webpack-config.js
+
+# Zig
+.zig-cache
+zig-out

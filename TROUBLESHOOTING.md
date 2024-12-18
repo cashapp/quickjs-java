@@ -14,18 +14,6 @@ sdk.dir=/Users/{your username}/Library/Android/sdk
 
 If you don't have Android SDK downloaded yet, the easiest way is to install Android Studio with default configuration with `brew install android-studio`. It will download the Android SDK to the above location in macOS and setup required usage terms approvals.
 
-## Missing cmake
-
-You may encounter silent failure in the `./.github/workflows/build-mac.sh` from missing `cmake` where this is no build output logs.
-
-On macOS, install with `brew install cmake`.
-
-## Build Native Libraries Locally
-
-Zipline requires architecture specific built artifacts of native code.
-
-On macOS, run from Zipline root directory `./.github/workflows/build-mac.sh`.
-
 ## Missing JNI Libraries
 
 ```
@@ -41,14 +29,19 @@ Caused by: java.lang.IllegalStateException: Unable to read /jni/aarch64/libquick
 	... 46 more
 ```
 
-For tests like `app.cash.zipline.ConsoleTest`, failures with the above stacktrace point to missing `.dylib` prebuilt C libraries necessary for using QuickJS from within Kotlin Multiplatform.
+For tests like `app.cash.zipline.ConsoleTest`, failures with the above stacktrace point to missing `.dylib` prebuilt C libraries necessary for using QuickJS from the JVM.
 
-To fix, download the latest published JVM JAR (e.g. `jvm-0.9.2.jar`) from the [releases](https://github.com/cashapp/zipline/releases) and extract the files (change the file extension to `.zip` and unzip) in the `jni` directory into `zipline/src/jvmMain/resources/jni` in your local Zipline repo.
+Download [the latest `jni-binaries` artifact](https://nightly.link/cashapp/zipline/workflows/build/trunk/jni-binaries) from our GitHub CI, and extract its contents to the `zipline/src/jvmMain/resources/jni/` directory.
 
-## Java Architecture Mismatch
+## Build JNI Libraries Locally
 
-Note in the above stacktrace the architecture present in the read path `/jni/x86_64/libquickjs.dylib`. If this architecture doesn't match your computer, then you are using a Java architecture version that doesn't match your computer.
+Zipline uses Zig to cross-compile its JVM native libraries to all platforms and architectures.
+This is only tested on macOS, but may work on Linux, too. Windows is not supported.
 
-For MX macOS computers, while the project will compile and seem usable, some tests will fail with the above failure when using an `x86_64` Java version on a `aarch64` processor (M1, M2...).
+First, download or install Zig 0.13.0 to your system.
+Then, execute these commands:
 
-Update your Java version to one that includes `aarch64` support and tests should pass.
+```
+$ cd zipline
+$ zig build -p src/jvmMain/resources/jni/
+```
