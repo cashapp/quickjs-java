@@ -19,7 +19,9 @@ import app.cash.zipline.QuickJs
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import okio.FileSystem
 import okio.Path.Companion.toPath
+import okio.SYSTEM
 import okio.use
 
 internal class SamplingProfilerTest {
@@ -128,7 +130,7 @@ internal class SamplingProfilerTest {
   /** This test just confirms the sampling profiler completes normally. */
   @Test
   fun happyPath() {
-    quickJs.startCpuSampling(SYSTEM_FILESYSTEM, "fibonacci.hprof".toPath()).use {
+    quickJs.startCpuSampling(FileSystem.SYSTEM, "fibonacci.hprof".toPath()).use {
       for (i in 0 until 100) {
         quickJs.evaluate("""fib20()""".trimMargin())
       }
