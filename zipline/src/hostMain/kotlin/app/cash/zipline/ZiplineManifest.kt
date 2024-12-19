@@ -49,7 +49,7 @@ data class ZiplineManifest private constructor(
   /** Fully qualified main function to start the application (ie. "zipline.ziplineMain"). */
   val mainFunction: String? = null,
 
-  /** Version to represent the code as defined in this manifest, by default it will be Git commit SHA. */
+  /** Version to represent the code as defined in this manifest */
   val version: String? = null,
 
   /**
