@@ -129,14 +129,6 @@ internal class KotlinFirLoader(
       getPackagePartProviderFn = { packagePartProvider },
     )
 
-    /*
-        projectEnvironment: VfsBasedProjectEnvironment,
-    messageCollector: MessageCollector,
-    compilerConfiguration: CompilerConfiguration,
-    input: ModuleCompilerInput,
-    diagnosticsReporter: BaseDiagnosticsCollector,
-    incrementalExcludesScope: AbstractProjectFileSearchScope?,
-     */
     @OptIn(IncrementalCompilationApi::class) // We are not within the Kotlin compiler.
     return compileModuleToAnalyzedFirViaLightTreeIncrementally(
       projectEnvironment,
