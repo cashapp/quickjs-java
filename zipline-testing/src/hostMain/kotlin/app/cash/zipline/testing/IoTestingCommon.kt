@@ -39,7 +39,6 @@ fun Zipline.loadTestingJs() {
   // Load modules in topologically-sorted order. In production the zipline-manifest does this.
   loadJsModuleFromResource("./kotlin-kotlin-stdlib.js")
   loadJsModuleFromResource("./kotlinx-atomicfu.js")
-  loadJsModuleFromResource("./kotlin-kotlinx-atomicfu-runtime.js")
   loadJsModuleFromResource("./kotlinx-serialization-kotlinx-serialization-core.js")
   loadJsModuleFromResource("./kotlinx-serialization-kotlinx-serialization-json.js")
   loadJsModuleFromResource("./kotlinx-coroutines-core.js")
