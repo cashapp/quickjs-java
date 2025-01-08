@@ -246,7 +246,6 @@ public synthetic class app/cash/zipline/ZiplineManifest$$serializer : kotlinx/se
 	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
 	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lapp/cash/zipline/ZiplineManifest;)V
 	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
 }
 
 public final class app/cash/zipline/ZiplineManifest$Companion {
@@ -283,7 +282,6 @@ public synthetic class app/cash/zipline/ZiplineManifest$Module$$serializer : kot
 	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
 	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lapp/cash/zipline/ZiplineManifest$Module;)V
 	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
 }
 
 public final class app/cash/zipline/ZiplineManifest$Module$Companion {
@@ -316,7 +314,6 @@ public synthetic class app/cash/zipline/ZiplineManifest$Unsigned$$serializer : k
 	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
 	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lapp/cash/zipline/ZiplineManifest$Unsigned;)V
 	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
 }
 
 public final class app/cash/zipline/ZiplineManifest$Unsigned$Companion {
