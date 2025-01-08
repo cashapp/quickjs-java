@@ -62,5 +62,5 @@ sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version = "3.47.2.0" }
 turbine = { module = "app.cash.turbine:turbine", version = "1.2.0" }
 
 [plugins]
-spotless = { id = "com.diffplug.spotless", version = "6.25.0" }
+spotless = { id = "com.diffplug.spotless", version = "7.0.1" }
 zipline-kotlin = { id = "app.cash.zipline.kotlin" }
