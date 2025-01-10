@@ -17,6 +17,7 @@ package app.cash.zipline.internal.bridge
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
 
 class SerialNameTest {
@@ -79,4 +80,26 @@ class SerialNameTest {
       serialName,
     )
   }
+
+  @Test
+  fun recursiveSerializer() {
+    val serialName = serialName(
+      "SomeType",
+      serializers = listOf(
+        serializer<SomeRecursiveType>(),
+      ),
+    )
+    assertEquals(
+      expected = "SomeType<" +
+        "app.cash.zipline.internal.bridge.SomeRecursiveType<" +
+        "app.cash.zipline.internal.bridge.SomeRecursiveType?<app.cash.zipline.internal.bridge.SomeRecursiveType?>" +
+        ">>",
+      actual = serialName,
+    )
+  }
 }
+
+@Serializable
+private data class SomeRecursiveType(
+  val someData: SomeRecursiveType?,
+)
