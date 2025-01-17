@@ -8,7 +8,7 @@ Nothing yet!
 ## [1.19.0] - 2024-12-03
 [1.19.0]: https://github.com/cashapp/zipline/releases/tag/1.19.0
 
- * Upgrade: [Kotlin 2.1.20](https://github.com/JetBrains/kotlin/releases/tag/v2.1.0)
+ * Upgrade: [Kotlin 2.1.0](https://github.com/JetBrains/kotlin/releases/tag/v2.1.0)
 
 
 ## [1.18.0] - 2024-11-14
